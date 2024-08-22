@@ -1,52 +1,72 @@
 package com.project.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name="pessoa", schema = "gerenciador")
 public class Pessoa {
 
-    Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
 
-    String name;
+    @Column(name = "nome")
+    String nome;
 
+    @Column(name = "data_nascimento")
     LocalDate dataNascimento;
 
+    @Column(name = "cpf")
     String cpf;
 
+    @Column(name = "funcionario")
     Boolean funcionario;
 
+    @Column(name = "gerente")
     Boolean gerente;
+
+
+    @ManyToMany(mappedBy = "membros")
+    List<Projeto> projetos;
 
     public Pessoa() {
 
     }
 
-    public Pessoa(String name, LocalDate dataNascimento, String cpf, Boolean funcionario, Boolean gerente) {
-        this.name = name;
+    public Pessoa(String nome, LocalDate dataNascimento, String cpf, Boolean funcionario, Boolean gerente) {
+        this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.cpf = cpf;
         this.funcionario = funcionario;
         this.gerente = gerente;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     public String getName() {
-        return name;
+        return nome;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.nome = name;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public LocalDate getDataNascimento() {
@@ -79,5 +99,20 @@ public class Pessoa {
 
     public void setGerente(Boolean gerente) {
         this.gerente = gerente;
+    }
+
+    public List<Projeto> getProjetos() {
+        return projetos;
+    }
+
+    public void setProjetos(List<Projeto> projetos) {
+        this.projetos = projetos;
+    }
+
+    public void addProjetos(Projeto projeto){
+        if(projetos == null){
+            projetos = new ArrayList<>();
+        }
+        projetos.add(projeto);
     }
 }

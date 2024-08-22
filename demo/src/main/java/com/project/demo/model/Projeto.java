@@ -1,34 +1,60 @@
 package com.project.demo.model;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "projeto", schema ="gerenciador")
 public class Projeto {
 
-    Integer id;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    Long id;
 
-    Integer idGerente;
+    @ManyToOne
+    @JoinColumn(name = "idgerente")
+    Pessoa gerente;
 
-    String name;
+    @Column(name="nome", nullable=false, unique=false)
+    String nome;
 
+    @CreationTimestamp
+    @Column(name="data_inicio", nullable=false, unique=false)
     LocalDate dataInicio;
 
+    @CreationTimestamp
+    @Column(name="data_fim", nullable=false, unique=false)
     LocalDate dataFim;
 
+    @Column(name="descricao", nullable=false, unique=false)
     String descricao;
 
+    @Column(name="status", nullable=false, unique=false)
     String status;
 
+    @Column(name="orcamento", nullable=false, unique=false)
     double orcamento;
 
+    @Column(name="risco", nullable=false, unique=false)
     ClassificacaoRisco risco;
 
+    @ManyToMany
+    @JoinTable(
+            name = "membros",
+            joinColumns = @JoinColumn(name = "id_projeto"),
+            inverseJoinColumns = @JoinColumn(name = "id_pessoa"))
+    List<Pessoa> membros;
 
     public Projeto() {
     }
 
-    public Projeto(Integer idGerente, String name, LocalDate dataInicio, LocalDate dataFim, String descricao, String status, double orcamento, ClassificacaoRisco risco) {
-        this.idGerente = idGerente;
-        this.name = name;
+    public Projeto(Pessoa gerente, String nome, LocalDate dataInicio, LocalDate dataFim, String descricao, String status, double orcamento, ClassificacaoRisco risco) {
+        this.gerente = gerente;
+        this.nome = nome;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.descricao = descricao;
@@ -37,20 +63,20 @@ public class Projeto {
         this.risco = risco;
     }
 
-    public Integer getIdGerente() {
-        return idGerente;
+    public Pessoa getGerente() {
+        return gerente;
     }
 
-    public void setIdGerente(Integer idGerente) {
-        this.idGerente = idGerente;
+    public void setGerente(Pessoa gerente) {
+        this.gerente = gerente;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public LocalDate getDataInicio() {
@@ -99,5 +125,28 @@ public class Projeto {
 
     public void setRisco(ClassificacaoRisco risco) {
         this.risco = risco;
+    }
+
+    public List<Pessoa> getMembros() {
+        return membros;
+    }
+
+    public void setMembros(List<Pessoa> membros) {
+        this.membros = membros;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void addMember(Pessoa pessoa){
+        if(membros == null){
+            membros = new ArrayList<>();
+        }
+        membros.add(pessoa);
     }
 }
