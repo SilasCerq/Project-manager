@@ -5,14 +5,11 @@ import com.project.demo.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class ProjetoController {
 
@@ -27,11 +24,11 @@ public class ProjetoController {
     public List<Projeto> GetAllProjeto(Model model){
         List<Projeto> projetos = projetoService.findAll();
         model.addAttribute("projetos", projetos);
-        return null;
+        return  projetoService.findAll();
     }
 
     @PostMapping("/projeto")
-    public Projeto createProjeto(Projeto projeto){
+    public Projeto createProjeto(@RequestBody Projeto projeto){
         return projetoService.createProjeto(projeto);
     }
 

@@ -1,6 +1,6 @@
 package com.project.demo.service;
 
-import com.project.demo.model.Analise;
+import com.project.demo.model.Status;
 import com.project.demo.model.Projeto;
 import com.project.demo.repository.ProjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +48,8 @@ public class ProjetoServiceImpl implements ProjetoService{
     @Override
     public void deleteProjeto(Long id) {
         Projeto projeto = findById(id);
-        Analise status = Analise.valueOf(projeto.getStatus());
-        if (status == Analise.INICIADO || status == Analise.ANDAMENTO || status == Analise.ENCERRADO){
+        Status status = Status.valueOf(projeto.getStatus());
+        if (status == Status.INICIADO || status == Status.ANDAMENTO || status == Status.ENCERRADO){
         throw new RuntimeException("");
         } else {
             projetoRepository.delete(projeto);

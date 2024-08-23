@@ -21,9 +21,11 @@ public class MembroServiceImpl implements MembroService{
 
     @Override
     public void createMembro(Pessoa pessoa, Projeto projeto) {
-        projeto.addMember(pessoa);
-        pessoa.addProjetos(projeto);
-        this.pessoaRepository.save(pessoa);
-        this.projetoRepository.save(projeto);
+        if(pessoa.getFuncionario()) {
+            projeto.addMember(pessoa);
+            pessoa.addProjetos(projeto);
+            this.pessoaRepository.save(pessoa);
+            this.projetoRepository.save(projeto);
+        }
     }
 }

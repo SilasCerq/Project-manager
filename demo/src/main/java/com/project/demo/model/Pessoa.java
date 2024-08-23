@@ -11,13 +11,14 @@ import java.util.List;
 public class Pessoa {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pessoa_seq_gen")
+    @SequenceGenerator(name = "pessoa_seq_gen", sequenceName = "gerenciador.pessoa_id_seq", allocationSize = 1)
     Long id;
 
-    @Column(name = "nome")
+    @Column(name = "nome", nullable = false)
     String nome;
 
-    @Column(name = "data_nascimento")
+    @Column(name = "datanascimento")
     LocalDate dataNascimento;
 
     @Column(name = "cpf")

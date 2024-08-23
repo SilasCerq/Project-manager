@@ -1,6 +1,6 @@
 package com.project.demo.model;
 
-public enum Analise {
+public enum Status {
     EM_ANALISE,
     REALIZADA,
     APROVADA,

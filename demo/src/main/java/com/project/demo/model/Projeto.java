@@ -12,39 +12,43 @@ import java.util.List;
 public class Projeto {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "projeto_seq_gen")
+    @SequenceGenerator(name = "projeto_seq_gen", sequenceName = "gerenciador.projeto_id_seq", allocationSize = 1)
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "idgerente")
+    @JoinColumn(name = "idgerente", nullable = false)
     Pessoa gerente;
 
-    @Column(name="nome", nullable=false, unique=false)
+    @Column(name="nome", nullable = false)
     String nome;
 
-    @CreationTimestamp
-    @Column(name="data_inicio", nullable=false, unique=false)
+    @Column(name="data_inicio")
     LocalDate dataInicio;
 
-    @CreationTimestamp
-    @Column(name="data_fim", nullable=false, unique=false)
+    @Column(name="data_previsao_fim")
+    LocalDate dataPrevisaoFim;
+
+    @Column(name="data_fim")
     LocalDate dataFim;
 
-    @Column(name="descricao", nullable=false, unique=false)
+    @Column(name="descricao")
     String descricao;
 
-    @Column(name="status", nullable=false, unique=false)
+    @Column(name="status")
     String status;
 
-    @Column(name="orcamento", nullable=false, unique=false)
+    @Column(name="orcamento")
     double orcamento;
 
-    @Column(name="risco", nullable=false, unique=false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "risco")
     ClassificacaoRisco risco;
 
     @ManyToMany
     @JoinTable(
             name = "membros",
+            schema = "gerenciador",
             joinColumns = @JoinColumn(name = "id_projeto"),
             inverseJoinColumns = @JoinColumn(name = "id_pessoa"))
     List<Pessoa> membros;
@@ -141,6 +145,14 @@ public class Projeto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LocalDate getDataPrevisaoFim() {
+        return dataPrevisaoFim;
+    }
+
+    public void setDataPrevisaoFim(LocalDate dataPrevisaoFim) {
+        this.dataPrevisaoFim = dataPrevisaoFim;
     }
 
     public void addMember(Pessoa pessoa){
