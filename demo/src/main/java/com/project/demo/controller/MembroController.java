@@ -55,5 +55,3 @@ public class MembroController {
         return "redirect:/projeto/" + projetoId + "/membros";
     }
 }
-
-

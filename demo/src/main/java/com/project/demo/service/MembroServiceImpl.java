@@ -42,7 +42,6 @@ public class MembroServiceImpl implements MembroService{
             pessoa.addProjetos(projeto);
             this.pessoaRepository.save(pessoa);
             this.projetoRepository.save(projeto);
-        } else{ throw new AcessDeniedException();
-            }
+        } else{ throw new AcessDeniedException();}
     }
 }

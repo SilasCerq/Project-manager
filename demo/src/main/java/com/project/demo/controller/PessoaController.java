@@ -1,5 +1,6 @@
     package com.project.demo.controller;
 
+    import com.project.demo.exceptions.PessoaCannotBeDeletedException;
     import com.project.demo.exceptions.PessoaNotFoundException;
     import com.project.demo.exceptions.ProjetoNotFoundException;
     import com.project.demo.model.Pessoa;
@@ -53,6 +54,11 @@
         public String deletePessoa(@PathVariable Long id, RedirectAttributes ra) {
             try {
                 pessoaService.delete(id);
+                ra.addFlashAttribute("message", "Pessoa excluída com sucesso.");
+                ra.addFlashAttribute("alertType", "success");
+            } catch (PessoaCannotBeDeletedException e) { // Captura a exceção personalizada
+                ra.addFlashAttribute("message", e.getMessage());
+                ra.addFlashAttribute("alertType", "danger");
             } catch (PessoaNotFoundException e) {
                 ra.addFlashAttribute("message", e.getMessage());
                 ra.addFlashAttribute("alertType", "danger");

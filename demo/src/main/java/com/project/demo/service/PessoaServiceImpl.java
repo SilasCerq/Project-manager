@@ -1,8 +1,10 @@
 package com.project.demo.service;
 
+import com.project.demo.exceptions.PessoaCannotBeDeletedException;
 import com.project.demo.exceptions.PessoaNotFoundException;
 import com.project.demo.model.Pessoa;
 import com.project.demo.repository.PessoaRepository;
+import com.project.demo.repository.ProjetoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +15,24 @@ import java.util.Optional;
 public class PessoaServiceImpl implements PessoaService{
 
     PessoaRepository pessoaRepository;
-
+    ProjetoRepository projetoRepository;
     @Autowired
-    public PessoaServiceImpl(PessoaRepository pessoaRepository) {
+    public PessoaServiceImpl(PessoaRepository pessoaRepository, ProjetoRepository projetoRepository) {
         this.pessoaRepository = pessoaRepository;
+        this.projetoRepository = projetoRepository;
     }
 
     @Override
     public void delete(Long id) {
         Pessoa pessoa = findById(id);
+
+        if (!pessoa.getProjetos().isEmpty()) {
+            throw new PessoaCannotBeDeletedException();
+        }
+
         pessoaRepository.delete(pessoa);
     }
+
 
     @Override
     public List<Pessoa> findAll() {
