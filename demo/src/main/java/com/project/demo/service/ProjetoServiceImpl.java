@@ -1,5 +1,7 @@
 package com.project.demo.service;
 
+import com.project.demo.exceptions.CannotDeleteProjectException;
+import com.project.demo.exceptions.ProjetoNotFoundException;
 import com.project.demo.model.Status;
 import com.project.demo.model.Projeto;
 import com.project.demo.repository.ProjetoRepository;
@@ -31,26 +33,36 @@ public class ProjetoServiceImpl implements ProjetoService{
         Projeto projeto = null;
         if(result.isPresent()){
             projeto = result.get();
-        } else {throw new RuntimeException("Nao existe nao amigo");}
+        } else {throw new ProjetoNotFoundException();}
         return projeto;
     }
 
     @Override
-    public Projeto createProjeto(Projeto projeto) {
+    public Projeto create(Projeto projeto) {
         return projetoRepository.save(projeto);
     }
 
     @Override
-    public Projeto updateProjeto(Projeto projeto) {
-        return projetoRepository.save(projeto);
+    public Projeto update(Projeto projeto) {
+        Projeto existingProjeto = findById(projeto.getId());
+        existingProjeto.setNome(projeto.getNome());
+        existingProjeto.setDataInicio(projeto.getDataInicio());
+        existingProjeto.setDataPrevisaoFim(projeto.getDataPrevisaoFim());
+        existingProjeto.setDataFim(projeto.getDataFim());
+        existingProjeto.setDescricao(projeto.getDescricao());
+        existingProjeto.setStatus(projeto.getStatus());
+        existingProjeto.setOrcamento(projeto.getOrcamento());
+        existingProjeto.setRisco(projeto.getRisco());
+        existingProjeto.setGerente(projeto.getGerente());
+        return projetoRepository.save(existingProjeto);
     }
 
     @Override
-    public void deleteProjeto(Long id) {
+    public void delete(Long id) {
         Projeto projeto = findById(id);
         Status status = Status.valueOf(projeto.getStatus());
         if (status == Status.INICIADO || status == Status.ANDAMENTO || status == Status.ENCERRADO){
-        throw new RuntimeException("");
+        throw new CannotDeleteProjectException();
         } else {
             projetoRepository.delete(projeto);
     }

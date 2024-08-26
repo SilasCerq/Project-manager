@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface PessoaService {
 
+    void delete(Long id);
     List<Pessoa> findAll();
-    Pessoa createPessoa(Pessoa pessoa);
+    Pessoa create(Pessoa pessoa);
     Pessoa findById(Long id);
 }

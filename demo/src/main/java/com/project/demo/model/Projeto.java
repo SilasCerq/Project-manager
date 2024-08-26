@@ -2,6 +2,7 @@ package com.project.demo.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,12 +24,15 @@ public class Projeto {
     @Column(name="nome", nullable = false)
     String nome;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="data_inicio")
     LocalDate dataInicio;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="data_previsao_fim")
     LocalDate dataPrevisaoFim;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="data_fim")
     LocalDate dataFim;
 
@@ -56,15 +60,17 @@ public class Projeto {
     public Projeto() {
     }
 
-    public Projeto(Pessoa gerente, String nome, LocalDate dataInicio, LocalDate dataFim, String descricao, String status, double orcamento, ClassificacaoRisco risco) {
+    public Projeto(Pessoa gerente, String nome, LocalDate dataInicio, LocalDate dataPrevisaoFim, LocalDate dataFim, String descricao, String status, double orcamento, ClassificacaoRisco risco, List<Pessoa> membros) {
         this.gerente = gerente;
         this.nome = nome;
         this.dataInicio = dataInicio;
+        this.dataPrevisaoFim = dataPrevisaoFim;
         this.dataFim = dataFim;
         this.descricao = descricao;
         this.status = status;
         this.orcamento = orcamento;
         this.risco = risco;
+        this.membros = membros;
     }
 
     public Pessoa getGerente() {

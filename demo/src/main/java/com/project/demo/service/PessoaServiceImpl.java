@@ -1,5 +1,6 @@
 package com.project.demo.service;
 
+import com.project.demo.exceptions.PessoaNotFoundException;
 import com.project.demo.model.Pessoa;
 import com.project.demo.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,18 @@ public class PessoaServiceImpl implements PessoaService{
     }
 
     @Override
+    public void delete(Long id) {
+        Pessoa pessoa = findById(id);
+        pessoaRepository.delete(pessoa);
+    }
+
+    @Override
     public List<Pessoa> findAll() {
         return pessoaRepository.findAll();
     }
 
     @Override
-    public Pessoa createPessoa(Pessoa pessoa) {
+    public Pessoa create(Pessoa pessoa) {
         return pessoaRepository.save(pessoa);
     }
 
@@ -34,8 +41,12 @@ public class PessoaServiceImpl implements PessoaService{
         Pessoa pessoa = null;
         if(result.isPresent()){
             pessoa = result.get();
+        } else {
+            throw new PessoaNotFoundException();
         }
 
         return pessoa;
     }
+
+
 }
